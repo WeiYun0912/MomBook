@@ -2,7 +2,7 @@ const puppeteer = require("puppeteer");
 const craeteCsvWriter = require("csv-writer").createObjectCsvWriter;
 const fs = require("fs");
 const csvWriter = craeteCsvWriter({
-  path: "file.csv",
+  path: "../server/insert/book.csv",
   header: [
     { id: "bookName", title: "書名" },
     { id: "author", title: "作者" },
@@ -16,7 +16,7 @@ const start = async () => {
 
   const ISBNs = fs.readFileSync("ISBN.txt").toString().split("\r\n");
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
   });
   const page = await browser.newPage();
   await page.setDefaultNavigationTimeout(0);

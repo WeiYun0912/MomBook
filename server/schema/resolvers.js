@@ -9,7 +9,8 @@ const resolvers = {
     },
 
     author: async (parent, args) => {
-      return await Author.find({ name: args.name });
+      console.log(args.name);
+      return await Author.find({ name: { $regex: args.name } });
     },
 
     books: async () => {

@@ -5,8 +5,9 @@ import Book from "./components/Book";
 function App() {
   const client = new ApolloClient({
     cache: new InMemoryCache(),
-    uri: "http://localhost:4000/graphql",
+    uri: "https://mombook.herokuapp.com/graphql",
   });
+
   return (
     <ApolloProvider client={client}>
       <Container maxWidth="xl">

@@ -14,7 +14,10 @@ const resolvers = {
     },
 
     books: async () => {
-      return await Book.find({});
+      const Books = await Book.find({});
+      if (Books) return { books: Books };
+
+      return { message: "Error happen!!!" };
     },
 
     book: async (parent, args) => {
@@ -55,6 +58,17 @@ const resolvers = {
     books: async (parent, args) => {
       const { _id } = parent;
       return await Book.find({ publishId: _id.toString() });
+    },
+  },
+
+  BooksResult: {
+    __resolveType(obj) {
+      console.log(obj);
+      if (obj.books) return "BooksSuccessResult";
+
+      if (obj.message) return "BooksErrorResult";
+
+      return null;
     },
   },
 

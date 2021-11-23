@@ -12,6 +12,10 @@ const type = gql`
     authorId: String!
   }
 
+  input FilterInput {
+    name: String
+  }
+
   type Publish {
     id: ID!
     name: String!
@@ -24,6 +28,11 @@ const type = gql`
     books: [Book]
   }
 
+  type AuthorAndPublish {
+    authorName: String
+    publishName: String
+  }
+
   type Book {
     id: ID!
     name: String!
@@ -31,14 +40,15 @@ const type = gql`
     authorId: String!
     author: [Author!]
     publish: [Publish!]
+    authorAndPublish: AuthorAndPublish
   }
 
   type Query {
-    authors: [Author!]!
+    authors(filter: FilterInput): [Author!]!
     author(name: String!): [Author!]
-    books: [Book!]
+    books(filter: FilterInput): BooksResult
     book(name: String!): [Book!]
-    publishs: [Publish!]
+    publishs(filter: FilterInput): [Publish!]
     publish(name: String!): [Publish!]
   }
 
@@ -48,6 +58,16 @@ const type = gql`
     createPublish(input: String!): Publish
     updateBook(input: String!): Book
   }
+
+  type BooksSuccessResult {
+    books: [Book!]
+  }
+
+  type BooksErrorResult {
+    message: String!
+  }
+
+  union BooksResult = BooksSuccessResult | BooksErrorResult
 `;
 
 module.exports = type;

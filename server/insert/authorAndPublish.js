@@ -16,7 +16,7 @@ let authorData = [];
 let publishData = [];
 
 const insertAuthor = new Promise((resolve, reject) => {
-  fs.createReadStream("../file.csv")
+  fs.createReadStream("./book.csv")
     .pipe(csv())
     .on("data", (row) => {
       authorData.push({
@@ -29,7 +29,7 @@ const insertAuthor = new Promise((resolve, reject) => {
     });
 });
 const insertPublish = new Promise((resolve, reject) => {
-  fs.createReadStream("../file.csv")
+  fs.createReadStream("./book.csv")
     .pipe(csv())
     .on("data", (row) => {
       publishData.push({

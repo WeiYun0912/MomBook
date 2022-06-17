@@ -15,18 +15,19 @@ mongoose.connect(uri, {
 });
 
 const insertBook = new Promise(async (resolve, reject) => {
-  fs.createReadStream("../file.csv")
+  fs.createReadStream("./book.csv")
     .pipe(csv())
     .on("data", async (row) => {
       const author = await Author.findOne({ name: row.作者 });
       const publish = await Publish.findOne({ name: row.出版社 });
-
+      console.log(row.作者);
       let book = new Book({
         name: row.書名,
         authorId: author._id.toString(),
         publishId: publish._id.toString(),
       });
 
+      // console.log(author);
       await book.save();
     })
     .on("end", async () => {

@@ -20,7 +20,6 @@ const insertBook = new Promise(async (resolve, reject) => {
     .on("data", async (row) => {
       const author = await Author.findOne({ name: row.作者 });
       const publish = await Publish.findOne({ name: row.出版社 });
-      console.log(row.作者);
       let book = new Book({
         name: row.書名,
         authorId: author._id.toString(),

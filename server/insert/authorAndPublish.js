@@ -15,36 +15,61 @@ mongoose.connect(uri, {
 let authorData = [];
 let publishData = [];
 
-const insertAuthor = new Promise((resolve, reject) => {
+const insertAuthor = new Promise(async (resolve, reject) => {
   fs.createReadStream("./book.csv")
     .pipe(csv())
-    .on("data", (row) => {
+    .on("data", async (row) => {
       authorData.push({
         name: row.作者,
       });
     })
-    .on("end", async () => {
-      await Author.insertMany(authorData);
-      resolve("success");
+    .on("end", async (d) => {
+      resolve(authorData);
     });
 });
+
 const insertPublish = new Promise((resolve, reject) => {
   fs.createReadStream("./book.csv")
     .pipe(csv())
-    .on("data", (row) => {
+    .on("data", async (row) => {
       publishData.push({
         name: row.出版社,
       });
     })
     .on("end", async () => {
-      await Publish.insertMany(publishData);
-      resolve("success");
+      resolve(publishData);
     });
 });
 
-Promise.all([insertAuthor, insertPublish]).then(async (d) => {
-  if (d[0] && d[1] === "success") {
-    console.log("down!");
-    process.exit(1);
-  }
+insertAuthor.then((d) => {
+  let newAuthor = [...new Map(d.map((item) => [item["name"], item])).values()];
+  newAuthor.map(async (author) => {
+    if ((await Author.findOne({ name: author.name })) == null) {
+      let a = new Author({
+        name: author.name,
+      });
+      await a.save();
+    }
+  });
 });
+
+insertPublish.then((d) => {
+  let newPublish = [...new Map(d.map((item) => [item["name"], item])).values()];
+  newPublish.map(async (publish) => {
+    if ((await Publish.findOne({ name: publish.name })) == null) {
+      let a = new Publish({
+        name: publish.name,
+      });
+      await a.save();
+    }
+  });
+});
+
+// insertPublish.then((d) => console.log("dd", d));
+
+// Promise.all([insertAuthor, insertPublish]).then(async (d) => {
+//   if (d[0] && d[1] === "success") {
+//     console.log("down!");
+//     process.exit(1);
+//   }
+// });

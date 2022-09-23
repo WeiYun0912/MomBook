@@ -1,5 +1,4 @@
 const { ApolloServer } = require("apollo-server");
-const resolvers = require("./schema/resolvers");
 const { Query } = require("./schema/resolvers/Query");
 const { Mutation } = require("./schema/resolvers/Mutation");
 const { Author } = require("./schema/resolvers/Author");
@@ -33,6 +32,22 @@ const server = new ApolloServer({
     BooksResult,
   },
 });
+
+// const app = express();
+// const port = 8080;
+
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
+
+// app.get("/hello", (req, res) => {
+//   res.json({
+//     message: "Hello",
+//   });
+// });
+
+// app.listen(3000, () => {
+//   console.log(`Express Server started on port ${port}`);
+// });
 
 server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
   console.log(`Server is ${url}`);

@@ -10,6 +10,7 @@ const type = gql`
     name: String!
     publishId: String!
     authorId: String!
+    ISBN: String!
   }
 
   input FilterInput {
@@ -41,13 +42,15 @@ const type = gql`
     author: [Author!]
     publish: [Publish!]
     authorAndPublish: AuthorAndPublish
+    createAt: String
   }
 
   type Query {
     authors(filter: FilterInput): [Author!]!
     author(name: String!): [Author!]
     books(filter: FilterInput): BooksResult
-    book(name: String!): [Book!]
+    book(name: String, ISBN: String): [Book!]
+    searchBook(ISBN: String!): Boolean
     publishs(filter: FilterInput): [Publish!]
     publish(name: String!): [Publish!]
   }

@@ -3,26 +3,41 @@ const Author = require("../../models/author");
 const Publish = require("../../models/publish");
 
 exports.Mutation = {
-  createAuthor: (parent, args) => {
-    let author = new Author({
+  createAuthor: async (parent, args) => {
+    const author = await Author.findOne({ name: args.input.name });
+
+    if (author) {
+      return author;
+    }
+
+    const authorData = new Author({
       name: args.input.name,
+      totalBook: 0,
     });
-    return author.save();
+    return authorData.save();
   },
+
+  createPublish: async (parent, args) => {
+    const publish = await Publish.findOne({ name: args.input });
+
+    if (publish) {
+      return publish;
+    }
+
+    const publishData = new Publish({
+      name: args.input,
+    });
+    return publishData.save();
+  },
+
   createBook: (parent, args) => {
     let book = new Book({
       name: args.input.name,
       publishId: args.input.publishId,
       authorId: args.input.authorId,
+      ISBN: args.input.ISBN,
     });
     return book.save();
-  },
-
-  createPublish: (parent, args) => {
-    let publish = new Publish({
-      name: args.input,
-    });
-    return publish.save();
   },
 
   updateBook: async (parent, args) => {

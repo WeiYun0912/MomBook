@@ -9,7 +9,8 @@ exports.Query = {
       Books = await Book.find({ name: { $regex: filter.name } });
       return { books: Books };
     }
-    Books = await Book.find({});
+
+    Books = await Book.find({}).sort({ createAt: -1 });
     if (Books) return { books: Books };
 
     return { message: "Error happen!!!" };
@@ -30,7 +31,20 @@ exports.Query = {
   },
 
   book: async (parent, args) => {
-    return await Book.find({ name: { $regex: args.name } });
+    if (args?.name) {
+      return await Book.find({ name: { $regex: args.name } });
+    }
+
+    if (args?.ISBN) {
+      return await Book.find({ ISBN: { $regex: args.ISBN } });
+    }
+
+    return [];
+  },
+
+  searchBook: async (parent, args) => {
+    let bookExists = await Book.exists({ ISBN: args.ISBN });
+    return bookExists;
   },
   author: async (parent, args) => {
     return await Author.find({ name: { $regex: args.name } });

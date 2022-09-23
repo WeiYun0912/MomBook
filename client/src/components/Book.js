@@ -42,13 +42,13 @@ const Book = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.books.map((book) => (
-              <TableRow hover role="checkbox" tabIndex={-1}>
+            {/* {data.books.books.map((book) => (
+              <TableRow hover role="checkbox" tabIndex={-1} key={book.id}>
                 <TableCell>{book.name}</TableCell>
-                <TableCell>{book.author[0]["name"]}</TableCell>
-                <TableCell>{book.publish[0]["name"]}</TableCell>
+                <TableCell>{book.authorAndPublish.authorName}</TableCell>
+                <TableCell>{book.authorAndPublish.publishName}</TableCell>
               </TableRow>
-            ))}
+            ))} */}
           </TableBody>
         </Table>
       </TableContainer>

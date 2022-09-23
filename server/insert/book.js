@@ -15,7 +15,7 @@ mongoose.connect(uri, {
 });
 
 const insertBook = new Promise(async (resolve, reject) => {
-  fs.createReadStream("./book.csv")
+  fs.createReadStream("./bookA9.csv")
     .pipe(csv())
     .on("data", async (row) => {
       const author = await Author.findOne({ name: row.作者 });
@@ -24,6 +24,9 @@ const insertBook = new Promise(async (resolve, reject) => {
         name: row.書名,
         authorId: author._id.toString(),
         publishId: publish._id.toString(),
+        haveImage: row.是否有圖片網址,
+        ISBN: row.ISBN.trim(),
+        position: row.位置,
       });
 
       // console.log(author);
@@ -34,4 +37,6 @@ const insertBook = new Promise(async (resolve, reject) => {
     });
 });
 
-insertBook.then((d) => console.log(d));
+insertBook.then((d) => {
+  console.log(d);
+});
